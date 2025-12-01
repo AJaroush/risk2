@@ -10,11 +10,18 @@
   ]
 
 # API redirects - must come before catch-all
+# Redirect /api/* to function, stripping /api prefix
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/predict/:splat"
   status = 200
   force = true
+
+# Redirect /api without trailing slash
+[[redirects]]
+  from = "/api"
+  to = "/.netlify/functions/predict"
+  status = 200
 
 # Health check endpoint
 [[redirects]]

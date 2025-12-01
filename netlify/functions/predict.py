@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 
 # Add paths for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -30,5 +31,20 @@ handler = Mangum(app, lifespan="off")
 
 def lambda_handler(event, context):
     """Netlify Functions entry point"""
-    return handler(event, context)
+    try:
+        return handler(event, context)
+    except Exception as e:
+        import traceback
+        error_msg = {
+            "statusCode": 500,
+            "body": json.dumps({
+                "error": str(e),
+                "traceback": traceback.format_exc()
+            }),
+            "headers": {
+                "Content-Type": "application/json"
+            }
+        }
+        print(f"Function error: {error_msg}")
+        return error_msg
 
