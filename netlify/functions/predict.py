@@ -27,24 +27,31 @@ spec.loader.exec_module(main_module)
 app = main_module.app
 
 # Create the handler for Netlify Functions
-handler = Mangum(app, lifespan="off")
+mangum_handler = Mangum(app, lifespan="off")
 
-def lambda_handler(event, context):
-    """Netlify Functions entry point"""
+def handler(event, context):
+    """Netlify Functions entry point - must be named 'handler'"""
     try:
-        return handler(event, context)
+        return mangum_handler(event, context)
     except Exception as e:
         import traceback
         error_msg = {
             "statusCode": 500,
             "body": json.dumps({
                 "error": str(e),
+                "message": "Function execution error",
                 "traceback": traceback.format_exc()
             }),
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
             }
         }
         print(f"Function error: {error_msg}")
         return error_msg
+
+# Also export as lambda_handler for compatibility
+def lambda_handler(event, context):
+    """Alternative entry point for compatibility"""
+    return handler(event, context)
 
