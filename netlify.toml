@@ -8,8 +8,6 @@
     "backend/**",
     "netlify/functions/**"
   ]
-  # Increase timeout for model loading (max 26s free, 50s Pro)
-  timeout = 26
 
 # API redirects - must come before catch-all
 [[redirects]]
