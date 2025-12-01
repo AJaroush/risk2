@@ -203,6 +203,9 @@ function App() {
 
   const getButtonText = () => {
     if (loading) return 'Processing...';
+    if (!selectedModel) {
+      return 'Please select a model above';
+    }
     const model = models.find(m => m.id === selectedModel);
     if (model) {
       if (model.id === 'hypertension') return 'Predict Hypertension';
@@ -308,6 +311,16 @@ function App() {
                       setSelectedModel(model.id);
                       setError(null);
                     }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedModel(model.id);
+                        setError(null);
+                      }
+                    }}
+                    aria-label={`Select ${model.name}`}
                   >
                         <div className="model-icon-wrapper" style={{ color: model.color }}>
                           {model.icon}
@@ -320,6 +333,18 @@ function App() {
                   </div>
                 ))}
               </div>
+                  {!selectedModel && (
+                    <p style={{ 
+                      textAlign: 'center', 
+                      color: '#667eea', 
+                      marginTop: '1rem', 
+                      marginBottom: '1rem',
+                      fontWeight: 600,
+                      fontSize: '0.95rem'
+                    }}>
+                      👆 Please click on a model card above to select it
+                    </p>
+                  )}
             </div>
 
             <div className="image-upload">
