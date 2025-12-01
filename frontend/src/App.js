@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// Use Netlify function in production, localhost in development
+// Use Netlify function redirect in production, localhost in development
 const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/.netlify/functions/predict'
+  ? '/api'  // Netlify redirects /api/* to /.netlify/functions/predict/*
   : (process.env.REACT_APP_API_URL || 'http://localhost:8000');
 
 function App() {
