@@ -8,13 +8,23 @@
     "backend/**",
     "netlify/functions/**"
   ]
+  # Increase timeout for model loading (max 26s free, 50s Pro)
+  timeout = 26
 
+# API redirects - must come before catch-all
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/predict/:splat"
   status = 200
   force = true
 
+# Health check endpoint
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/predict/health"
+  status = 200
+
+# Catch-all for React app - must be last
 [[redirects]]
   from = "/*"
   to = "/index.html"
