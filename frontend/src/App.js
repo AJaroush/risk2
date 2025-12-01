@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
 
-// Use Netlify function redirect in production, localhost in development
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/api'  // Netlify redirects /api/* to /.netlify/functions/predict/*
-  : (process.env.REACT_APP_API_URL || 'http://localhost:8000');
+// Use environment variable if set (for external backend), otherwise use Netlify function or localhost
+const API_URL = process.env.REACT_APP_API_URL 
+  ? process.env.REACT_APP_API_URL
+  : (process.env.NODE_ENV === 'production' 
+    ? '/api'  // Netlify redirects /api/* to /.netlify/functions/predict/*
+    : 'http://localhost:8000');
 
 function App() {
   const [activePage, setActivePage] = useState('predict');
